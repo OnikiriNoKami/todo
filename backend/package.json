@@ -4,13 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --legacy-watch src/server.js"
+    "dev": "nodemon src/server.js",
+    "startDocker": "nodemon --legacy-watch src/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "apollo-server": "^3.4.0",
+    "apollo-server-express": "^3.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "graphql": "^15.6.1",
     "mongoose": "^6.0.12"
