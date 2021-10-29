@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    email:String,
-    phone: String,
+    email: {type: String, unique: true, default: ''},
+    phone:  {type: String, unique: true, default: ''},
     nickName: {type: String, required: true, unique: true},
     password: {type: String, required: true},
     todos: [mongoose.Types.ObjectId],
-    token: String,
+    token:  {type: String, default: ''},
 },
 {
     timestamps: true
