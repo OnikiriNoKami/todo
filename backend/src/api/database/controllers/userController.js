@@ -83,7 +83,7 @@ const userController = {
             return result;
         } catch (error) {
             console.log(error.message);
-            return error.messagel;
+            return error.message;
         }
     },
 };
