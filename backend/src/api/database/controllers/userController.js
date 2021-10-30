@@ -47,9 +47,12 @@ const userController = {
         }
     },
 
-    getById: async (_id) => {
+    getById: async (_id, withTodos=false) => {
         try {
             const result = await User.findById(_id);
+            if(withTodos){
+                result.userTodos = await Todo.find({ userId: _id });
+            }
             return result || null;
         } catch (error) {
             console.log(error.message);
@@ -57,20 +60,12 @@ const userController = {
         }
     },
 
-    getByIdWithTodos: async (_id) => {
-        try {
-            const result = await User.findById(_id);
-            result.userTodos = await Todo.find({ userId: _id });
-            return result || null;
-        } catch (error) {
-            console.log(error.message);
-            return error.message;
-        }
-    },
-
-    getByNickName: async (nickName) => {
+    getByNickName: async (nickName, withTodos) => {
         try {
             const result = await User.findOne({ nickName });
+            if(withTodos && result!==null){
+                result.userTodos = await Todo.find({ userId: result._id });
+            }
             return result || null;
         } catch (error) {
             console.log(error.messge);
