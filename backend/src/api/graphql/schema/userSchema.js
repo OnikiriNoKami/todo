@@ -60,6 +60,30 @@ const userQueries = new GraphQLObjectType({
             },
             description: "Getting userTodos by $lookup."
         },
+        getUserById: {
+            type: userType,
+            args: {
+                id: {
+                    type: GraphQLString,
+                    description: "Format of MongoDB _id."
+            }},
+            resolve:(_, {id}, context, info) => {
+                const { userTodos } = graphqlFields(info);
+                return userController.getById(id, userTodos);
+            }
+        },
+        getUserByNickName: {
+            type: userType,
+            args: {
+                nickName: {
+                    type: GraphQLString,
+                    description: "User nickName, exact comparison."
+            }},
+            resolve:(_, {nickName}, context, info) => {
+                const { userTodos } = graphqlFields(info);
+                return userController.getByNickName(nickName, userTodos);
+            }
+        }
     },
 });
 
@@ -87,7 +111,15 @@ const userMutations = new GraphQLObjectType({
                 },
             },
             resolve: (_, {email, phone, nickName, password}) => userController.create({email, nickName, phone, password})
+        },
+        deleteUser: {
+            type: userType,
+            args: {
+                id:{ type: GraphQLString, description: "Id of document ot be removed." }                
+            },
+            resolve: (_, {id}) => {message: 'Deprecated right now.'}//userController.fidnOneAndRemove(id)
         }
+
     }
 })
 
