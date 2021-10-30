@@ -26,10 +26,6 @@ const userType = new GraphQLObjectType({
             type: GraphQLString,
             description: "User nickname, is required.",
         },
-        password: {
-            type: GraphQLString,
-            description: "User password, is required.",
-        },
         token: {
             type: GraphQLString,
             description: "Token for authorization.",
@@ -112,6 +108,23 @@ const userMutations = new GraphQLObjectType({
             },
             resolve: (_, {email, phone, nickName, password}) => userController.create({email, nickName, phone, password})
         },
+        addTodoToUser: {
+            type: userType,
+            args: {
+                userId: {
+                    type: new GraphQLNonNull(GraphQLString),
+                    description: "User id, MongoDB _id."
+                },
+                todoId: {
+                    type: new GraphQLNonNull(GraphQLString),
+                    description: "Todo is, MongoDB _id."
+                }
+            }, 
+            resolve: (_, {userId, todoId}, context, info) => {
+                const { userTodos } = graphqlFields(info);
+                return userController.findAndAddTodo({ _id: userId, todoId, userTodos})
+            }
+        },
         deleteUser: {
             type: userType,
             args: {
@@ -129,5 +142,6 @@ const userSchema = new GraphQLSchema({
 });
 
 module.exports = {
+    userType,
     userSchema,
 };
