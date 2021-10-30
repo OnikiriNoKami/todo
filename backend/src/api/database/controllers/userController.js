@@ -18,6 +18,23 @@ const userController = {
             return error.message;
         }
     },
+    findAndAddTodo: async ({_id, todoId, userTodos}) => {
+        try{
+            const result = await User.findById(_id)
+            if(!result.todos.some((objectId)=>objectId.toString()===todoId)){
+                console.log(result.todos)
+                result.todos.push(todoId)
+                await result.save()
+            }
+            if(userTodos && result!==null){
+                result.userTodos = await Todo.find({ userId: result._id });
+            }
+            return result
+        } catch (error){
+            console.log(error.message)
+            return error
+        }
+    },
 
     getAll: async () => {
         try {
@@ -33,7 +50,7 @@ const userController = {
             const result = await User.aggregate([
                 {
                     $lookup: {
-                        from: "todo",
+                        from: "todos",
                         localField: "_id",
                         foreignField: "userId",
                         as: "userTodos",
