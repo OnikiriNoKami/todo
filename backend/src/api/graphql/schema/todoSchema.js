@@ -43,7 +43,7 @@ const todoType = new GraphQLObjectType({
         beginDate: { type: GraphQLString },
         endDate: { type: GraphQLString },
         user: {
-            type: new GraphQLList(userTypeNoCircularDeps),
+            type: userTypeNoCircularDeps,
             description: "Fetches from db only when requested.",
         },
     },
@@ -63,6 +63,19 @@ const todoQueries = new GraphQLObjectType({
                 return todoController.getAllTodos();
             },
         },
+        getTodoById: {
+            type: todoType,
+            args: {
+                id: {
+                    type: new GraphQLNonNull(GraphQLString),
+                    description: "MongoDB _id."
+                }
+            },
+            resolve: (_, {id}, context, info) => {
+                const {user} = graphqlFields(info);
+                return todoController.getTodoById(id, user);
+            }
+        }
     },
 });
 
@@ -107,6 +120,19 @@ const todoMutations = new GraphQLObjectType({
                     endDate,
                 }),
         },
+        deleteTodo: {
+            type: todoType,
+            args: {
+                id: {
+                    type: new GraphQLNonNull(GraphQLString),
+                    description: 'MongoDB _id.'
+                }
+            },
+            resolve: (_, {id}, context, info) => {
+                const {user} = graphqlFields(info);
+                return todoController.delete(id, user);
+            }
+        }
     },
 });
 
