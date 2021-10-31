@@ -1,5 +1,6 @@
 const User = require("../schemas/userSchema");
 const Todo = require("../schemas/todoSchema");
+const bcrypt = require('bcrypt');
 
 const userController = {
     create: async ({
@@ -10,7 +11,8 @@ const userController = {
         phone = "",
     }) => {
         try {
-            const user = new User({ nickName, email, token, phone, password });
+            const passwordHash = await bcrypt.hash(password, 4);
+            const user = new User({ nickName, email, token, phone, passwordHash });
             await user.save();
             return user;
         } catch (error) {
