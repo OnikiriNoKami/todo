@@ -125,6 +125,23 @@ const userMutations = new GraphQLObjectType({
                 return userController.findAndAddTodo({ _id: userId, todoId, userTodos})
             }
         },
+        removeTodoFromUser: {
+            type: userType,
+            args: {
+                userId: {
+                    type: new GraphQLNonNull(GraphQLString),
+                    description: "User id, MongoDB _id."
+                },
+                todoId: {
+                    type: new GraphQLNonNull(GraphQLString),
+                    description: "Todo is, MongoDB _id."
+                }
+            }, 
+            resolve: (_, {userId, todoId}, context, info) => {
+                const { userTodos } = graphqlFields(info);
+                return userController.findAndRemoveTodo({ userId, todoId, userTodos})
+            }
+        },
         deleteUser: {
             type: userType,
             args: {
