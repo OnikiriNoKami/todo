@@ -26,10 +26,6 @@ const userType = new GraphQLObjectType({
             type: GraphQLString,
             description: "User nickname, is required.",
         },
-        token: {
-            type: GraphQLString,
-            description: "Token for authorization.",
-        },
         todos: {
             type: GraphQLList(GraphQLString),
             description: "Array of todo ids.",
@@ -78,6 +74,33 @@ const userQueries = new GraphQLObjectType({
             resolve:(_, {nickName}, context, info) => {
                 const { userTodos } = graphqlFields(info);
                 return userController.getByNickName(nickName, userTodos);
+            }
+        },
+        login: {
+            type: userType,
+            args: {
+                nickName: {
+                    type: new GraphQLNonNull(GraphQLString),
+                },
+                password: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve: (_, {nickName, password}, context, info) => {
+                const { userTodos } = graphqlFields(info);
+                return userController.login({nickName, password, userTodos})
+            }
+        },
+        auth: {
+            type: userType,
+            args: {
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve: (_, {token}, context, info) => {
+                const { userTodos } = graphqlFields(info);
+                return userController.auth({token, userTodos})
             }
         }
     },
