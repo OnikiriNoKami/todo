@@ -1,4 +1,5 @@
 const Todo = require("../schemas/todoSchema");
+const User = require("../schemas/userSchema");
 const { findAndAddTodo } = require("./userController");
 
 const todoController = {
@@ -49,6 +50,31 @@ const todoController = {
             return result || null;
 
         } catch (error){
+            console.log(error.message)
+            return error
+        }
+    },
+
+    getTodoById: async (_id, withUser)=> {
+        try{
+            const result = await Todo.findById(_id);
+            if(withUser){
+                result.user = await User.findById(result.userId);
+            }
+            return result
+        } catch (error){
+            console.log(error.message)
+            return error
+        }
+    },
+    delete: async (_id, withUser)=> {
+        try {
+            const result = await Todo.findByIdAndRemove(_id);
+            if(withUser){
+                result.user = await User.findById(result.userId);
+            }
+            return result
+        } catch(error){
             console.log(error.message)
             return error
         }
