@@ -1,23 +1,68 @@
+require('dotenv').config()
 const User = require("../schemas/userSchema");
 const Todo = require("../schemas/todoSchema");
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const userController = {
     create: async ({
         nickName = "",
         password = "",
-        email = "",
-        token = "",
-        phone = "",
+        email = null,
+        phone = null,
     }) => {
         try {
             const passwordHash = await bcrypt.hash(password, 4);
-            const user = new User({ nickName, email, token, phone, passwordHash });
+            const token = jwt.sign({nickName}, process.env.JWT_KEY, {expiresIn: '2d'})
+            const user = new User({ nickName, email, token, phone, password: passwordHash });
             await user.save();
             return user;
         } catch (error) {
             console.log(error.message);
-            return error.message;
+            return error
+        }
+    },
+    login: async ({nickName, password, userTodos}) => {
+        try{
+            const user = await User.findOne({nickName})
+            if(!user){
+                throw new Error("User does not exist.")
+            }
+
+            if(bcrypt.compare(password, user.password)){
+                const token = jwt.sign({nickName}, process.env.JWT_KEY, {expiresIn: '2d'})
+                user.token = token;
+                await user.save()
+                if(userTodos){
+                    user.userTodos = await Todo.find({ userId: user._id });
+                }
+                return user
+            } else {
+                throw new Error("Password does not match.")
+
+            }
+        } catch (error){
+            console.log(error)
+            return error
+        }
+    },
+    auth: async ({token, userTodos}) => {
+        try{
+            const verify = jwt.verify(token, process.env.JWT_KEY)
+            const user = await User.findOne({nickName: verify.nickName})
+            if(!user){
+                throw new Error("User does not exist")
+            }
+            const newToken = jwt.sign({nickName: user.nickName}, process.env.JWT_KEY, {expiresIn: '2d'})
+            user.token = newToken;
+            await user.save()
+            if(userTodos){
+                user.userTodos = await Todo.find({ userId: user._id });
+            }
+            return user
+        } catch(error){
+            console.log(error.message)
+            return error
         }
     },
     findAndAddTodo: async ({_id, todoId, userTodos}) => {
