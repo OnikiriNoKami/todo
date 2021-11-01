@@ -5,4 +5,11 @@ const statusActionsTypes = {
     DROP_STATUS_DATA: 'drop_status_data',
 }
 
+export const statusesActionsTypes = {
+    SET_STATUSES: 'set_statuses',
+    SET_STATUSES_LOADING: 'set_statuses_loading',
+    DROP_STATUSES: 'drop_statuses',
+    ADD_STATUS: 'add_status'
+}
+
 export default statusActionsTypes;
