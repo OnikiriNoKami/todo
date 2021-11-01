@@ -12,7 +12,7 @@ const manyTodosReducer = (state=defaultState, {type, payload}) => {
         case todosActionsTypes.SET_TODOS_LOADING:
             return { ...state, loading: payload }
         case todosActionsTypes.ADD_TODO:
-            return { ...state, manyTodos: [ ...state.todos, payload ] }
+            return { ...state, todos: [ ...state.todos, payload ] }
         case todosActionsTypes.DROP_TODOS:
             return { ...defaultState }
 
