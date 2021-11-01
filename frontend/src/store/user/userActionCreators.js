@@ -52,7 +52,8 @@ const userActions = {
             })
         } 
         throw new Error('Confirmation for user data drop not provided.')
-    }
+    },
+    setLoading: (loading) => ({type: userActionsTypes.SET_USER_LOADING, payload: loading })
 };
 
 export default userActions;

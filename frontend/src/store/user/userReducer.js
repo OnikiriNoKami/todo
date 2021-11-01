@@ -7,6 +7,7 @@ const defaultState = {
     nickName: "",
     todos: [],
     token: "",
+    loading: false,
 };
 
 const userReducer = (state = defaultState, { type, payload }) => {
@@ -32,6 +33,8 @@ const userReducer = (state = defaultState, { type, payload }) => {
                 token: payload.token || state.token,
                 id: payload.id || state.id,
             };
+        case userActionsTypes.SET_USER_LOADING:
+            return { ...state, loading: payload }
         case userActionsTypes.ADD_USER_TODO:
             return { ...state, todos: [...state.todos, payload] };
         case userActionsTypes.DROP_USER_DATA:
