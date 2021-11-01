@@ -1,6 +1,7 @@
 import userActionsTypes from "../../utils/reduxActionType/userActionsTypes";
 
 const defaultState = {
+    id: "",
     email: "",
     phone: "",
     nickName: "",
@@ -12,6 +13,8 @@ const userReducer = (state = defaultState, { type, payload }) => {
     switch (type) {
         case userActionsTypes.SET_USER_NICKNAME:
             return { ...state, nickName: payload };
+        case userActionsTypes.SET_USER_ID:
+            return { ...state, id: payload };
         case userActionsTypes.SET_USER_EMAIL:
             return { ...state, email: payload };
         case userActionsTypes.SET_USER_PHONE:
@@ -27,6 +30,7 @@ const userReducer = (state = defaultState, { type, payload }) => {
                 nickName: payload.nickName || state.nickName,
                 todos: payload.todos || state.todos,
                 token: payload.token || state.token,
+                id: payload.id || state.id,
             };
         case userActionsTypes.ADD_USER_TODO:
             return { ...state, todos: [...state.todos, payload] };

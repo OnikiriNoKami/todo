@@ -16,10 +16,11 @@ import userActionsTypes from "../../utils/reduxActionType/userActionsTypes";
 //     DROP_USER_DATA: 'drop_user_data'
 
 const userActions = {
-    setData: ({ email, phone, nickName, todos, token }) => ({
+    setData: ({ email, phone, nickName, todos, token, id }) => ({
         type: userActionsTypes.SET_USER_DATA,
-        payload: { email, phone, nickName, todos, token },
+        payload: { email, phone, nickName, todos, token, id },
     }),
+    setId: (id) => ({type: userActionsTypes.SET_USER_ID, payload: id}),
     setNickName: (nickName) => ({
         type: userActionsTypes.SET_USER_NICKNAME,
         payload: nickName,
