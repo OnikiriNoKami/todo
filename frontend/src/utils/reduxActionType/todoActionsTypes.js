@@ -11,4 +11,11 @@ const todoActionsTypes = {
     DROP_TODO_DATA: 'drop_todo_data',
 }
 
+export const todosActionsTypes = {
+    SET_TODOS: 'set_todos',
+    SET_TODOS_LOADING: 'set_todos_loading',
+    ADD_TODO: 'add_todo',
+    DROP_TODOS: 'drop_todos',
+}
+
 export default todoActionsTypes;
