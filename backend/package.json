@@ -4,15 +4,23 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --legacy-watch src/server.js"
+    "dev": "nodemon src/server.js",
+    "startDocker": "nodemon --legacy-watch src/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@graphql-tools/schema": "^8.3.1",
     "apollo-server": "^3.4.0",
+    "apollo-server-express": "^3.4.0",
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "graphql": "^15.6.1",
+    "graphql-fields": "^2.0.3",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.12"
   },
   "devDependencies": {
