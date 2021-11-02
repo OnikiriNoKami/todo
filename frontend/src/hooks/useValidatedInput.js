@@ -19,12 +19,12 @@ const useValidatedInput = (defaultValue = "", validations) => {
                         : setIsEmptyError(false);
                     break;
                 case "minLength":
-                    input.basic.value < validation
+                    input.basic.value.length <= validations[validation]
                         ? setMinLengthError(true)
                         : setMinLengthError(false);
                     break;
                 case "maxLength":
-                    input.basic.value > validation
+                    input.basic.value.length >= validations[validation]
                         ? setMaxLengthError(true)
                         : setMaxLengthError(false);
                     break;
@@ -40,14 +40,18 @@ const useValidatedInput = (defaultValue = "", validations) => {
                         ? setIsDefault(true)
                         : setIsDefault(false);
                     break;
+                default:
+                    
             }
         }
-    }, [input.basic.value, input.focusLost, validations, defaultValue]);
+    }, [input.basic.value, input.focusLost, validations,defaultValue]);
 
     useEffect(() => {
         if (
-            (isEmptyError || isEmailError || minLengthError || maxLengthError) &
-            input.focusLost
+            (isEmptyError && input.focusLost) ||
+            (isEmailError && input.focusLost) ||
+            (minLengthError && input.focusLost) ||
+            (maxLengthError && input.focusLost)
         ) {
             setErrorStatus(true);
         } else {
