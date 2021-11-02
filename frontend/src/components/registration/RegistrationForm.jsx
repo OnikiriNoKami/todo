@@ -1,29 +1,30 @@
 import React from "react";
-import { Container, Grid, TextField, Box } from "@mui/material";
-import useValidatedInput from "../../hooks/useValidatedInput";
+import {
+    Container,
+    Grid,
+    Box,
+} from "@mui/material";
 import useBoxStyles from "../../styles/boxStyles";
+import LinkToLogin from "./LinkToLogin";
+import RegistrationButtonGroup from "./RegistrationButtonGroup";
+import RegistrationInputGroup from "./RegistrationInputGroup";
+import RegistrationMessage from "./RegistrationMessage";
 
 export default function RegistrationForm() {
-    const email = useValidatedInput("", { isEmail: true });
-    const boxStyles = useBoxStyles();
+    const boxStyles = useBoxStyles();    
+
     return (
-        
-            <Box className={boxStyles.box}>
-                <Container>
-                <form>
+        <Box className={boxStyles.box}>
+            <Container>
+                <form autoComplete="off">
                     <Grid container spacing={3} justifyContent="center">
-                        <Grid item xs={12} sm={8} md={6}>
-                            <TextField
-                                {...email.basic}
-                                error={email.errorStatus}
-                                fullWidth
-                                label="Email"
-                            />
-                        </Grid>
+                        <RegistrationMessage/>
+                        <RegistrationInputGroup/>
+                        <RegistrationButtonGroup/>
+                        <LinkToLogin/>
                     </Grid>
                 </form>
-                </Container>
-            </Box>
-        
+            </Container>
+        </Box>
     );
 }
