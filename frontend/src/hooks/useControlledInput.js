@@ -29,6 +29,16 @@ const useControlledInput = (defaultValue='') => {
         }
     }
 
+    const resetInput = () => {
+        setDefault();
+        if(focusReceived){
+            setFocusReceived(false);
+        }
+        if(focusLost){
+            setFocusLost(false);
+        }
+    }
+
     return {
         basic: {
             value,
@@ -39,6 +49,7 @@ const useControlledInput = (defaultValue='') => {
         focusLost,
         focusReceived,
         setDefault,
+        resetInput,
     }
 }
 
