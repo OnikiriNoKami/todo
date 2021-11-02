@@ -6,12 +6,14 @@ import paginationReducer from "./pagination";
 import userReducer from "./user";
 import statusReducer from "./status";
 import todoReducer from "./todo";
+import registrationReducer from "./registration";
 
 const combinedReducer = combineReducers({
     pagination: paginationReducer,
     user: userReducer,
     status: statusReducer,
     todo: todoReducer,
+    registration: registrationReducer,
 });
 
 export const store = createStore(
