@@ -9,6 +9,7 @@ const useValidatedInput = (defaultValue = "", validations) => {
     const [isEmailError, setIsEmailError] = useState(false);
     const [errorStatus, setErrorStatus] = useState(false);
     const [isDefault, setIsDefault] = useState(true);
+    const [isValidInput, setIsValidInput ] = useState(false);
 
     useEffect(() => {
         for (const validation in validations) {
@@ -19,12 +20,12 @@ const useValidatedInput = (defaultValue = "", validations) => {
                         : setIsEmptyError(false);
                     break;
                 case "minLength":
-                    input.basic.value < validation
+                    input.basic.value.length <= validations[validation]
                         ? setMinLengthError(true)
                         : setMinLengthError(false);
                     break;
                 case "maxLength":
-                    input.basic.value > validation
+                    input.basic.value.length >= validations[validation]
                         ? setMaxLengthError(true)
                         : setMaxLengthError(false);
                     break;
@@ -40,16 +41,21 @@ const useValidatedInput = (defaultValue = "", validations) => {
                         ? setIsDefault(true)
                         : setIsDefault(false);
                     break;
+                default:
+                    
             }
         }
-    }, [input.basic.value, input.focusLost, validations, defaultValue]);
+    }, [input.basic.value, input.focusLost, validations,defaultValue]);
 
     useEffect(() => {
         if (
-            (isEmptyError || isEmailError || minLengthError || maxLengthError) &
-            input.focusLost
+            (isEmptyError && input.focusLost) ||
+            (isEmailError && input.focusLost) ||
+            (minLengthError && input.focusLost) ||
+            (maxLengthError && input.focusLost)
         ) {
             setErrorStatus(true);
+            
         } else {
             setErrorStatus(false);
         }
@@ -61,10 +67,19 @@ const useValidatedInput = (defaultValue = "", validations) => {
         input.focusLost,
     ]);
 
+    useEffect(()=>{
+        if(errorStatus||!input.focusLost){
+            setIsValidInput(false);
+        } else {
+            setIsValidInput(true);
+        }
+    }, [errorStatus, input.focusLost])
+
     return {
         ...input,
         errorStatus,
         isDefault,
+        isValidInput,
     };
 };
 

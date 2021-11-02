@@ -1,29 +1,37 @@
 import React from "react";
-import { Container, Grid, TextField, Box } from "@mui/material";
-import useValidatedInput from "../../hooks/useValidatedInput";
+import { useDispatch }from 'react-redux';
+import {
+    Container,
+    Grid,
+    Box,
+} from "@mui/material";
 import useBoxStyles from "../../styles/boxStyles";
+import LinkToLogin from "./LinkToLogin";
+import RegistrationButtonGroup from "./RegistrationButtonGroup";
+import RegistrationInputGroup from "./RegistrationInputGroup";
+import RegistrationMessage from "./RegistrationMessage";
+import { regCreateUserRequest } from "../../store/registration/registrationActionCreators";
 
 export default function RegistrationForm() {
-    const email = useValidatedInput("", { isEmail: true });
-    const boxStyles = useBoxStyles();
+    const dispatch = useDispatch();
+    const boxStyles = useBoxStyles(); 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        dispatch(regCreateUserRequest(true))
+    }   
+
     return (
-        
-            <Box className={boxStyles.box}>
-                <Container>
-                <form>
+        <Box className={boxStyles.box}>
+            <Container>
+                <form autoComplete="off" onSubmit={handleSubmit}>
                     <Grid container spacing={3} justifyContent="center">
-                        <Grid item xs={12} sm={8} md={6}>
-                            <TextField
-                                {...email.basic}
-                                error={email.errorStatus}
-                                fullWidth
-                                label="Email"
-                            />
-                        </Grid>
+                        <RegistrationMessage/>
+                        <RegistrationInputGroup/>
+                        <RegistrationButtonGroup/>
+                        <LinkToLogin/>
                     </Grid>
                 </form>
-                </Container>
-            </Box>
-        
+            </Container>
+        </Box>
     );
 }
