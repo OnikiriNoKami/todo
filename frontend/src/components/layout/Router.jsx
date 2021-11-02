@@ -1,6 +1,6 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import { REGISTRATION_PATH } from "../../routes/consts";
+import { LOGIN_PATH } from "../../routes/consts";
 import { nonAuthorized } from "../../routes/nonAuthorized";
 
 export default function Router() {
@@ -15,7 +15,7 @@ export default function Router() {
                     />
                 );
             })}
-            <Redirect to={REGISTRATION_PATH} />
+            <Redirect to={LOGIN_PATH} />
         </Switch>
     );
 }
