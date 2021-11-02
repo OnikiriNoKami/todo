@@ -1,11 +1,61 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import useValidatedInput from "../../hooks/useValidatedInput";
+import { regResetInputs, regSetEmailDirty, regSetEmailValid, regSetPasswordDirty, regSetPasswordValid } from "../../store/registration/registrationActionCreators";
 
 export default function RegistrationInputGroup() {
+    const dispatch = useDispatch();
     const email = useValidatedInput("", { isEmail: true, maxLength: 300 });
     const password = useValidatedInput("", { minLength: 8, maxLength: 200 });
+    const resetRequest = useSelector(state => state.registration.resetRequest);
+
+    const resetInputs = () => {
+        email.resetInput();
+        password.resetInput();
+        dispatch(regResetInputs(false));
+    }
+
+    useEffect(()=>{
+        if(email.isValidInput){
+            dispatch(regSetEmailValid(true))
+        } else {
+            dispatch(regSetEmailValid(false))
+        }
+        
+    }, [email.isValidInput, dispatch])
+
+    useEffect(()=>{
+        if(password.isValidInput){
+            dispatch(regSetPasswordValid(true))
+        } else {
+            dispatch(regSetPasswordValid(false))
+        }
+
+    }, [password.isValidInput, dispatch])
+
+    useEffect(()=>{
+        if(email.focusLost){
+            dispatch(regSetEmailDirty(true))
+        } else {
+            dispatch(regSetEmailDirty(false))
+        }
+    }, [email.focusLost, dispatch])
+
+    useEffect(()=>{
+        if(password.focusLost){
+            dispatch(regSetPasswordDirty(true))
+        } else {
+            dispatch(regSetPasswordDirty(false))
+        }
+    }, [password.focusLost, dispatch])
+
+    useEffect(()=>{
+        if(resetRequest){
+            resetInputs();
+        }
+    }, [resetRequest])
     return (
         <>
             <Grid item xs={12}>
