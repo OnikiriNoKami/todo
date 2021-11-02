@@ -30,6 +30,9 @@ const userType = new GraphQLObjectType({
             type: GraphQLList(GraphQLString),
             description: "Array of todo ids.",
         },
+        token: {
+            type: GraphQLString,
+        },
         userTodos: {
             type: GraphQLList(todoType),
             description: "Fetches from db only when requested.",

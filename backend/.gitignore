@@ -1,6 +1,4 @@
+/node_modules
 Dockerfile
-node_modules
 Makefile
-src/static
 .env
-.gititnore

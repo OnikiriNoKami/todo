@@ -1,0 +1,7 @@
+todos.drawio
+todos.drawio.png
+backend/src/static
+backend/.env
+backend/Makefile
+backend/node_modules/
+backend/Dockerfile
