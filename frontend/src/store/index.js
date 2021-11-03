@@ -9,6 +9,7 @@ import todoReducer from "./todo";
 import registrationReducer from "./registration";
 import loginReducer from "./login";
 import authorizationReducer from "./authorization";
+import loadersReducer from "./loaders";
 
 const combinedReducer = combineReducers({
     authorization: authorizationReducer,
@@ -18,6 +19,7 @@ const combinedReducer = combineReducers({
     login: loginReducer,
     registration: registrationReducer,
     pagination: paginationReducer,
+    loaders: loadersReducer, 
     
 });
 

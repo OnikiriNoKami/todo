@@ -9,7 +9,7 @@ export default function Router() {
     const authorizationStatus = useSelector(state => state.authorization.authorized);
     return (
         <Switch>
-            {nonAuthorized.map((route) => {
+            {!authorizationStatus&&nonAuthorized.map((route) => {
                 return (
                     <Route
                         key={route.path}
