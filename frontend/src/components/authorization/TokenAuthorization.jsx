@@ -14,17 +14,11 @@ export default function TokenAuthorization() {
     const { data, error, loading } = userAuthMutation.result;
     const dispatch = useDispatch()
 
-    useEffect(()=>{
-        setToken(getToken())
-        dispatch(tokenLoaderActions.display(true))
-    }, [])
-
-    useEffect(()=>{
-        
+    const handleAuth = async () => {
         try{
             if(token !== '' && token != null){
                 dispatch(authorizationActions.setToken(token))
-                userAuthMutation.authUserMutation({
+                await userAuthMutation.authUserMutation({
                     variables: {
                         token: token
                     }
@@ -38,6 +32,17 @@ export default function TokenAuthorization() {
             dispatch(tokenLoaderActions.display(false))
             console.error(error.message)
         }
+    }
+
+
+    useEffect(()=>{
+        setToken(getToken())
+        dispatch(tokenLoaderActions.display(true))
+    }, [])
+
+    useEffect(()=>{
+        handleAuth();
+        
     }, [token])
 
     useEffect(()=>{
@@ -51,13 +56,6 @@ export default function TokenAuthorization() {
             history.push(`${TODOS_PATH}`)
         }
     }, [data])
-
-    useEffect(()=>{
-        if(error){
-            console.error(error.message)
-            dispatch(tokenLoaderActions.display(false))
-        }
-    }, [error])
 
     return null
 }
