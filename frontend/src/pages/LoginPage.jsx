@@ -1,9 +1,9 @@
 import React from 'react'
-
+import LoginForm from '../components/authorization/LoginForm'
 export default function LoginPage() {
     return (
-        <div>
-            Login page
-        </div>
+        <>
+            <LoginForm/>
+        </>
     )
 }
