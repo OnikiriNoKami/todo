@@ -1,12 +1,15 @@
 import React, { useEffect } from "react";
+import { useHistory } from 'react-router-dom';
 import { useSelector } from "react-redux";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import useValidatedInput from "../../hooks/useValidatedInput";
 import { useCreateUser } from "../../hooks/GraphQL/mutations/userMutations";
 import RegistrationInputMonitor from "./RegistrationInputMonitor";
+import { LOGIN_PATH } from "../../routes/consts";
 
 export default function RegistrationInputGroup() {
+    const history = useHistory();
     const userCreatorMutation = useCreateUser();
     const email = useValidatedInput("", {
         isEmail: true,
@@ -20,7 +23,7 @@ export default function RegistrationInputGroup() {
         (state) => state.registration.createUserRequest
     );
 
-    const doTheThing = async () => {
+    const createHandler = async () => {
         try {
             await userCreatorMutation.createUserMutation({
                 variables: {
@@ -36,15 +39,15 @@ export default function RegistrationInputGroup() {
 
     useEffect(() => {
         if (createUserRequest) {
-            doTheThing();
+            createHandler();
         }
     }, [createUserRequest]);
 
     useEffect(() => {
-        if (userCreatorMutation.result.loading) {
-            console.log("loading user");
+        if (userCreatorMutation.result.data) {
+            history.push(`${LOGIN_PATH}`)
         }
-    }, [userCreatorMutation.result.loading]);
+    }, [userCreatorMutation.result.data]);
     return (
         <>
             <RegistrationInputMonitor

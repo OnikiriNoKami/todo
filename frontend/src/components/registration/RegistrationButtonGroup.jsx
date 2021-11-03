@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import useButtonStyles from "../../styles/buttonStyles";
-import { regResetInputs } from "../../store/registration/registrationActionCreators";
+import { regCreateUserRequest, regResetInputs } from "../../store/registration/registrationActionCreators";
 
 export default function RegistrationButtonGroup() {
     const buttonStyles = useButtonStyles();
@@ -12,7 +12,8 @@ export default function RegistrationButtonGroup() {
     const password = useSelector(state=> state.registration.password);
     const nickName = useSelector(state=> state.registration.nickName);
     const callResetInputs = () => {
-        dispatch(regResetInputs(true))
+        dispatch(regResetInputs(true));
+        dispatch(regCreateUserRequest(false));
     }
     return (
         <Grid item xs={12}>
