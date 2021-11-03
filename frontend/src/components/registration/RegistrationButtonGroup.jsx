@@ -7,9 +7,10 @@ import { regResetInputs } from "../../store/registration/registrationActionCreat
 
 export default function RegistrationButtonGroup() {
     const buttonStyles = useButtonStyles();
-    const dispatch = useDispatch()
-    const email = useSelector(state=>state.registration.email)
-    const password = useSelector(state=> state.registration.password)
+    const dispatch = useDispatch();
+    const email = useSelector(state=>state.registration.email);
+    const password = useSelector(state=> state.registration.password);
+    const nickName = useSelector(state=> state.registration.nickName);
     const callResetInputs = () => {
         dispatch(regResetInputs(true))
     }
@@ -24,7 +25,7 @@ export default function RegistrationButtonGroup() {
                                 variant="outlined"
                                 color="primary"
                                 type='submit'
-                                disabled={!password.valid || !email.valid}
+                                disabled={!password.valid || !(email.valid || email.isDefault) || !nickName.valid}
                             >
                                 Registration
                             </Button>
@@ -35,7 +36,7 @@ export default function RegistrationButtonGroup() {
                                 variant="outlined"
                                 color="secondary"
                                 onClick={callResetInputs}
-                                disabled={!password.dirty && !email.dirty}
+                                disabled={!password.dirty && !email.dirty && !nickName.dirty}
                             >
                                 reset
                             </Button>
