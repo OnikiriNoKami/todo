@@ -45,7 +45,7 @@ const useValidatedInput = (defaultValue = "", validations) => {
                     
             }
         }
-    }, [input.basic.value, input.focusLost, validations,defaultValue]);
+    }, [input.basic.value, input.focusLost, defaultValue]);
 
     useEffect(() => {
         if (
