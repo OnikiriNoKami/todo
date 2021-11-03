@@ -1,130 +1,63 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import useValidatedInput from "../../hooks/useValidatedInput";
-import {
-    regResetInputs,
-    regSetEmailDirty,
-    regSetEmailValid,
-    regSetPasswordDirty,
-    regSetPasswordValid,
-    regSetNickNameValid,
-    regSetNickNameDirty,
-    regSetEmailIsDefault,
-    regSetNickNameIsDefault,
-    regSetPasswordIsDefault,
-} from "../../store/registration/registrationActionCreators";
+import { useCreateUser } from "../../hooks/GraphQL/mutations/userMutations";
+import RegistrationInputMonitor from "./RegistrationInputMonitor";
 
 export default function RegistrationInputGroup() {
-    const dispatch = useDispatch();
-    const email = useValidatedInput("", { isEmail: true, maxLength: 300 , isDefault: true});
+    const userCreatorMutation = useCreateUser();
+    const email = useValidatedInput("", {
+        isEmail: true,
+        maxLength: 300,
+        isDefault: true,
+    });
     const nickName = useValidatedInput("", { minLength: 8, maxLength: 200 });
     const password = useValidatedInput("", { minLength: 8, maxLength: 200 });
-    const resetRequest = useSelector(
-        (state) => state.registration.resetRequest
-    );
+
     const createUserRequest = useSelector(
         (state) => state.registration.createUserRequest
     );
 
-    const resetInputs = () => {
-        email.resetInput();
-        password.resetInput();
-        nickName.resetInput();
-        dispatch(regResetInputs(false));
+    const doTheThing = async () => {
+        try {
+            await userCreatorMutation.createUserMutation({
+                variables: {
+                    email: email.basic.value === "" ? null : email.basic.value,
+                    nickName: nickName.basic.value,
+                    password: password.basic.value,
+                },
+            });
+        } catch (error) {
+            console.error(error.message);
+        }
     };
 
     useEffect(() => {
-        if (email.isValidInput) {
-            dispatch(regSetEmailValid(true));
-        } else {
-            dispatch(regSetEmailValid(false));
-        }
-    }, [email.isValidInput, dispatch]);
-
-    useEffect(() => {
-        if (password.isValidInput) {
-            dispatch(regSetPasswordValid(true));
-        } else {
-            dispatch(regSetPasswordValid(false));
-        }
-    }, [password.isValidInput, dispatch]);
-
-    useEffect(() => {
-        if (nickName.isValidInput) {
-            dispatch(regSetNickNameValid(true));
-        } else {
-            dispatch(regSetNickNameValid(false));
-        }
-    }, [nickName.isValidInput, dispatch]);
-
-    useEffect(() => {
-        if (email.focusLost) {
-            dispatch(regSetEmailDirty(true));
-        } else {
-            dispatch(regSetEmailDirty(false));
-        }
-    }, [email.focusLost, dispatch]);
-
-    useEffect(() => {
-        if (password.focusLost) {
-            dispatch(regSetPasswordDirty(true));
-        } else {
-            dispatch(regSetPasswordDirty(false));
-        }
-    }, [password.focusLost, dispatch]);
-
-    useEffect(() => {
-        if (nickName.focusLost) {
-            dispatch(regSetNickNameDirty(true));
-        } else {
-            dispatch(regSetNickNameDirty(false));
-        }
-    }, [nickName.focusLost, dispatch]);
-
-    useEffect(() => {
-        if (email.isDefault) {
-            dispatch(regSetEmailIsDefault(true));
-        } else {
-            dispatch(regSetEmailIsDefault(false));
-        }
-    }, [email.isDefault, dispatch]);
-
-    // useEffect(() => {
-    //     if (password.isDefault) {
-    //         dispatch(regSetPasswordIsDefault(true));
-    //     } else {
-    //         dispatch(regSetPasswordIsDefault(false));
-    //     }
-    // }, [password.isDefault, dispatch]);
-
-    // useEffect(() => {
-    //     if (nickName.isDefault) {
-    //         dispatch(regSetNickNameIsDefault(true));
-    //     } else {
-    //         dispatch(regSetNickNameIsDefault(false));
-    //     }
-    // }, [nickName.isDefault, dispatch]);
-
-    useEffect(() => {
         if (createUserRequest) {
+            doTheThing();
         }
     }, [createUserRequest]);
 
     useEffect(() => {
-        if (resetRequest) {
-            resetInputs();
+        if (userCreatorMutation.result.loading) {
+            console.log("loading user");
         }
-    }, [resetRequest]);
+    }, [userCreatorMutation.result.loading]);
     return (
         <>
+            <RegistrationInputMonitor
+                email={email}
+                password={password}
+                nickName={nickName}
+            />
             <Grid item xs={12}>
                 <Grid container spacing={3} justifyContent="center">
                     <Grid item xs={12} sm={8} md={6} lg={5}>
                         <TextField
                             {...email.basic}
-                            error={email.errorStatus&&!email.isDefault}
+                            error={email.errorStatus && !email.isDefault}
                             type="text"
                             helperText="Example: myemail@email.com"
                             fullWidth
