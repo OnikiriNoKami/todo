@@ -174,6 +174,33 @@ const userMutations = new GraphQLObjectType({
                 id:{ type: GraphQLString, description: "Id of document ot be removed." }                
             },
             resolve: (_, {id}) => {message: 'Deprecated right now.'}//userController.fidnOneAndRemove(id)
+        },
+        login: {
+            type: userType,
+            args: {
+                nickName: {
+                    type: new GraphQLNonNull(GraphQLString),
+                },
+                password: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve: (_, {nickName, password}, context, info) => {
+                const { userTodos } = graphqlFields(info);
+                return userController.login({nickName, password, userTodos})
+            }
+        },
+        auth: {
+            type: userType,
+            args: {
+                token: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve: (_, {token}, context, info) => {
+                const { userTodos } = graphqlFields(info);
+                return userController.auth({token, userTodos})
+            }
         }
 
     }
