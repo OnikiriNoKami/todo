@@ -1,4 +1,4 @@
-import { createUser, loginUserMut } from "../../../GraphQL/mutations/userMutations";
+import { createUser, loginUserMut, authUserMut } from "../../../GraphQL/mutations/userMutations";
 import { useMutation } from "@apollo/client";
 
 export const useCreateUser = () => {
@@ -28,3 +28,17 @@ export const useLoginForUser = () => {
         },
     };
 };
+
+export const useTokenAuth = () => {
+    const [authUserMutation, { data, loading, error }] =
+        useMutation(authUserMut);
+
+    return {
+        authUserMutation,
+        result: {
+            data,
+            loading,
+            error,
+        },
+    };
+}
