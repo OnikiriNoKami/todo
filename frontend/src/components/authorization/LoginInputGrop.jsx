@@ -1,33 +1,30 @@
 import React, { useEffect } from "react";
 import { useHistory } from 'react-router-dom';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import useValidatedInput from "../../hooks/useValidatedInput";
-import { useCreateUser } from "../../hooks/GraphQL/mutations/userMutations";
-import RegistrationInputMonitor from "./RegistrationInputMonitor";
-import { LOGIN_PATH } from "../../routes/consts";
+import LoginInputMonitor from "./LoginInputMonitor";
+import { useLoginForUser } from "../../hooks/GraphQL/mutations/userMutations";
+import authorizationActions from "../../store/authorization/authorizationActionCreators";
+import { logLoginUserRequest } from "../../store/login/loginActionCreators";
+import { setToken } from "../../storage/tokenStorage";
+import { TODOS_PATH } from "../../routes/consts";
 
-export default function RegistrationInputGroup() {
+export default function LoginInputGroup() {
+    const dispatch = useDispatch();
     const history = useHistory();
-    const userCreatorMutation = useCreateUser();
-    const email = useValidatedInput("", {
-        isEmail: true,
-        maxLength: 300,
-        isDefault: true,
-    });
+    const userLoginMutation = useLoginForUser();
+    const { data, error, loading } = userLoginMutation.result;
     const nickName = useValidatedInput("", { minLength: 8, maxLength: 200 });
     const password = useValidatedInput("", { minLength: 8, maxLength: 200 });
 
-    const createUserRequest = useSelector(
-        (state) => state.registration.createUserRequest
-    );
+    const loginUserRequest = useSelector((state) => state.login.loginUserRequest);
 
-    const createHandler = async () => {
+    const loginHandler = async () => {
         try {
-            await userCreatorMutation.createUserMutation({
+            userLoginMutation.loginUserMutation({
                 variables: {
-                    email: email.basic.value === "" ? null : email.basic.value,
                     nickName: nickName.basic.value,
                     password: password.basic.value,
                 },
@@ -38,38 +35,25 @@ export default function RegistrationInputGroup() {
     };
 
     useEffect(() => {
-        if (createUserRequest) {
-            createHandler();
+        if (loginUserRequest) {
+            loginHandler();
+            dispatch(logLoginUserRequest(false))
         }
-    }, [createUserRequest]);
+    }, [loginUserRequest]);
 
     useEffect(() => {
-        if (userCreatorMutation.result.data) {
-            history.push(`${LOGIN_PATH}`)
+        if (data) {
+            dispatch(authorizationActions.setAuthorized(true));
+            dispatch(authorizationActions.setToken(data.login.token))
+            if(data?.login?.token){
+                setToken(data.login.token)
+            }
+            history.push(`${TODOS_PATH}`)
         }
-    }, [userCreatorMutation.result.data]);
+    }, [data]);
     return (
         <>
-            <RegistrationInputMonitor
-                email={email}
-                password={password}
-                nickName={nickName}
-            />
-            <Grid item xs={12}>
-                <Grid container spacing={3} justifyContent="center">
-                    <Grid item xs={12} sm={8} md={6} lg={5}>
-                        <TextField
-                            {...email.basic}
-                            error={email.errorStatus && !email.isDefault}
-                            type="text"
-                            helperText="Example: myemail@email.com"
-                            fullWidth
-                            autoComplete="new-Email"
-                            label="Email"
-                        />
-                    </Grid>
-                </Grid>
-            </Grid>
+            <LoginInputMonitor password={password} nickName={nickName}/>
             <Grid item xs={12}>
                 <Grid container spacing={3} justifyContent="center">
                     <Grid item xs={12} sm={8} md={6} lg={5}>
@@ -79,7 +63,7 @@ export default function RegistrationInputGroup() {
                             helperText="At least 8 characters."
                             required
                             type="text"
-                            autoComplete="nickname"
+                            autoComplete='nickname'
                             fullWidth
                             label="Nickname"
                         />
@@ -95,7 +79,7 @@ export default function RegistrationInputGroup() {
                             helperText="At least 8 characters."
                             required
                             type="password"
-                            autoComplete="new-Password"
+                            autoComplete="password"
                             fullWidth
                             label="Password"
                         />

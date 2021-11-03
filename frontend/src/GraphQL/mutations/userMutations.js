@@ -40,3 +40,30 @@ export const removeTodoFromUser = gql`
         }
     }
 `;
+
+export const loginUserMut = gql`
+    mutation Mutations($nickName: String!, $password: String!) {
+        login(nickName: $nickName, password: $password) {
+            _id
+            email
+            phone
+            nickName
+            todos
+            token
+        }
+    }
+`;
+
+export const authUserMut = gql`
+    mutation Mutations($token: String!) {
+        auth(token: $token) {
+            _id
+            email
+            phone
+            nickName
+            todos
+            token
+        }
+    }
+`;
+

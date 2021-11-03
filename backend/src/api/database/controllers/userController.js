@@ -12,9 +12,16 @@ const userController = {
         phone = null,
     }) => {
         try {
-            const passwordHash = await bcrypt.hash(password, 4);
-            const token = jwt.sign({nickName}, process.env.JWT_KEY, {expiresIn: '2d'})
-            const user = new User({ nickName, email, token, phone, password: passwordHash });
+            const creationData = {nickName, email, phone}
+            creationData.password = await bcrypt.hash(password, 4);
+            creationData.token = jwt.sign({nickName}, process.env.JWT_KEY, {expiresIn: '2d'})
+            if(email === '' || email == null){
+                delete creationData.email
+            }
+            if(phone === '' || phone == null){
+                delete creationData.phone
+            }
+            const user = new User(creationData);
             await user.save();
             return user;
         } catch (error) {
