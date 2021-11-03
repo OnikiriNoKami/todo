@@ -3,17 +3,16 @@ import { useSelector, useDispatch } from "react-redux";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import useButtonStyles from "../../styles/buttonStyles";
-//import { regCreateUserRequest, regResetInputs } from "../../store/registration/registrationActionCreators";
+import { logLoginUserRequest, logResetInputs } from "../../store/login/loginActionCreators";
 
 export default function LoginButtonGroup() {
     const buttonStyles = useButtonStyles();
     const dispatch = useDispatch();
-    //const email = useSelector(state=>state.registration.email);
     const password = useSelector(state=> state.login.password);
     const nickName = useSelector(state=> state.login.nickName);
     const callResetInputs = () => {
-        // dispatch(regResetInputs(true));
-        // dispatch(regCreateUserRequest(false));
+        dispatch(logResetInputs(true));
+        dispatch(logLoginUserRequest(false));
     }
     return (
         <Grid item xs={12}>
