@@ -79,7 +79,7 @@ export default function RegistrationInputGroup() {
                             helperText="At least 8 characters."
                             required
                             type="text"
-                            autoComplete="new-NickName"
+                            autoComplete="nickname"
                             fullWidth
                             label="Nickname"
                         />
