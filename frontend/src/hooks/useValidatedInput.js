@@ -68,7 +68,8 @@ const useValidatedInput = (defaultValue = "", validations) => {
     ]);
 
     useEffect(()=>{
-        if(errorStatus||!input.focusLost){
+        //||!input.focusLost
+        if((errorStatus)){
             setIsValidInput(false);
         } else {
             setIsValidInput(true);
