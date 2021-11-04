@@ -49,7 +49,7 @@ export const getTodoById = gql`
     }
 `;
 
-export const getTodoById = gql`
+export const getTodoByIdWithUser = gql`
     query Queries($todoId: String!) {
         getTodoById(id: $todoId) {
             _id
