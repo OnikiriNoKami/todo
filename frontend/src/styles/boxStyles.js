@@ -9,6 +9,12 @@ const useBoxStyles = makeStyles((theme) => {
             height: '100%',
             alignItems: 'center',
         },
+        boxLogoutButton: {
+            position: 'absolute',
+            bottom: '5%',
+            right: '5%',
+            zIndex: 4,
+        }
     })
 })
 
