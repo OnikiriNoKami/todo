@@ -14,6 +14,14 @@ const useBoxStyles = makeStyles((theme) => {
             bottom: '5%',
             right: '5%',
             zIndex: 4,
+        },
+        boxToTop: {
+            paddingTop: '25px',
+            width: '100%',
+            display: 'flex',
+            //flexGrow: 1,
+            height: '100%',
+            //alignItems: 'center',
         }
     })
 })

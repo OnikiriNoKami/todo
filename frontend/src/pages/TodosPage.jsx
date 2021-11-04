@@ -1,9 +1,10 @@
-import React from 'react'
+import React from 'react';
+import TodoCreationForm from '../components/todo/creationForm/TodoCreationForm';
 
 export default function TodosPage() {
     return (
-        <div>
-            Main Page
-        </div>
+        <>
+            <TodoCreationForm/>
+        </>
     )
 }
