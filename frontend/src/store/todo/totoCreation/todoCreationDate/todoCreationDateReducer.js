@@ -1,5 +1,4 @@
 import todoCreationDateActionsTypes from "../../../../utils/reduxActionType/todoCreation/todoCreationDateActionsTypes";
-import { format } from "date-fns";
 
 const defaultState = {
     beginDate: new Date(),
