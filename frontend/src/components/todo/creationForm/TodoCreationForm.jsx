@@ -3,13 +3,14 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import useBoxStyles from "../../../styles/boxStyles";
-import TodoCreationCollapse from "./TodoCreationCollapse";
-import TodoCreationMainMessage from "./TodoCreationMainMessage";
+import TodoCollapseGroup from "./TodoCollapseGroup";
+
 
 export default function TodoCreationForm() {
     const boxStyles = useBoxStyles();
 
-    const handleSubmit = () => {
+    const handleSubmit = (event) => {
+        event.preventDefault()
         console.log("Submit todo creation bubling...");
     };
     return (
@@ -17,8 +18,7 @@ export default function TodoCreationForm() {
             <Container>
                 <form onSubmit={handleSubmit}>
                     <Grid container spacing={2} justifyContent="center">
-                        <TodoCreationMainMessage />
-                        <TodoCreationCollapse />
+                        <TodoCollapseGroup />
                     </Grid>
                 </form>
             </Container>

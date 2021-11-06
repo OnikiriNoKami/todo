@@ -22,7 +22,7 @@ export default function TodoCreationInputGroup() {
                         value='asfasfsadf'
                         label='Description'
                         multiline
-                        rows={4}
+                        rows={3}
                         fullWidth
                      />
                 </Grid>
