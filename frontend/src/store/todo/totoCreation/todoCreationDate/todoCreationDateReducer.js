@@ -13,7 +13,8 @@ const todoCreationDateReducer = (state=defaultState, {type, payload}) => {
             return { ...state, beginDate: payload}
         case todoCreationDateActionsTypes.ADD_DAY_TODO_CREATION_ENDDATE:
             return { ...state, endDate: new Date( state.endDate.setDate(state.endDate.getDate() + payload))}
-
+        case todoCreationDateActionsTypes.RESET_TODO_CREATION_DATE_DATA:
+            return { ...defaultState }
         default:
             return state
     }
