@@ -13,7 +13,7 @@ export default function TodoCreationDateGroup() {
     const endDate = useSelector(state=>state.todo.todoCreation.date.endDate);
     React.useEffect(()=>{
         dispatch(addDayToEndDate(1));
-    }, [])
+    }, [dispatch])
 
     const handleBeginChange = (newValue) => {
         dispatch(setBeginDate(newValue))
