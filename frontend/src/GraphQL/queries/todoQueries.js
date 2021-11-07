@@ -49,6 +49,20 @@ export const getTodoById = gql`
     }
 `;
 
+export const getTodosByUserId = gql`
+    query Queries($userId: String!) {
+        getTodosByUserId(userId: $userId) {
+            _id
+            title
+            description
+            statusId
+            beginDate
+            endDate
+            userId
+        }
+    }
+`;
+
 export const getTodoByIdWithUser = gql`
     query Queries($todoId: String!) {
         getTodoById(id: $todoId) {

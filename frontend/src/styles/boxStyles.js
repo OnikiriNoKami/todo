@@ -9,6 +9,11 @@ const useBoxStyles = makeStyles((theme) => {
             height: '100%',
             alignItems: 'center',
         },
+        boxBasic: {
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+        },
         boxLogoutButton: {
             position: 'absolute',
             bottom: '5%',
@@ -20,7 +25,7 @@ const useBoxStyles = makeStyles((theme) => {
             width: '100%',
             display: 'flex',
             //flexGrow: 1,
-            height: '100%',
+            //height: '100%',
             //alignItems: 'center',
         }
     })
