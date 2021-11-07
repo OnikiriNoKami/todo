@@ -1,9 +1,12 @@
-import React from 'react'
+import React from 'react';
+import TodoCreationForm from '../components/todo/creationForm/TodoCreationForm';
+import TodoTable from '../components/todo/todoTable/TodoTable';
 
 export default function TodosPage() {
     return (
-        <div>
-            Main Page
-        </div>
+        <>
+            <TodoCreationForm/>
+            <TodoTable />
+        </>
     )
 }

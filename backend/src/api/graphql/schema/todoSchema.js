@@ -75,6 +75,19 @@ const todoQueries = new GraphQLObjectType({
                 const {user} = graphqlFields(info);
                 return todoController.getTodoById(id, user);
             }
+        },
+        getTodosByUserId: {
+            type: new GraphQLList(todoType),
+            args: {
+                userId: {
+                    type: new GraphQLNonNull(GraphQLString),
+                    description: "MongoDB _id."
+                }
+            },
+            resolve: (_, {userId}, context, info) => {
+                const {user} = graphqlFields(info);
+                return todoController.getTodosByUserId(userId, user);
+            }
         }
     },
 });
@@ -97,7 +110,7 @@ const todoMutations = new GraphQLObjectType({
                     description: "MongoDB _id.",
                 },
                 statusId: {
-                    type: new GraphQLNonNull(GraphQLString),
+                    type: GraphQLString,
                     description: "MongoDB _id.",
                 },
                 beginDate: {
@@ -110,15 +123,17 @@ const todoMutations = new GraphQLObjectType({
             resolve: (
                 _,
                 { title, description, userId, statusId, beginDate, endDate }
-            ) =>
-                todoController.create({
+            ) =>{
+                statusId === '' ? statusId = null : null
+                return todoController.create({
                     title,
                     description,
                     userId,
                     statusId,
                     beginDate,
                     endDate,
-                }),
+                })
+            },
         },
         deleteTodo: {
             type: todoType,

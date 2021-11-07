@@ -6,6 +6,7 @@ import { getToken } from '../../storage/tokenStorage';
 import authorizationActions from '../../store/authorization/authorizationActionCreators';
 import { TODOS_PATH } from '../../routes/consts';
 import tokenLoaderActions from '../../store/loaders/authorization/token/tokenLoaderActionCreators';
+import userActions from '../../store/user/userActionCreators';
 
 export default function TokenAuthorization() {
     const history = useHistory()
@@ -52,6 +53,9 @@ export default function TokenAuthorization() {
             dispatch(tokenLoaderActions.display(false))
             if(data?.auth?.token){
                 setToken(data.auth.token)
+                dispatch(userActions.setId(data.auth._id));
+                dispatch(userActions.setNickName(data.auth.nickName));
+                dispatch(userActions.setToken(data.auth.token));
             }
             history.push(`${TODOS_PATH}`)
         }

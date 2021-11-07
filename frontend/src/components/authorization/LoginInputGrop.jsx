@@ -10,6 +10,7 @@ import authorizationActions from "../../store/authorization/authorizationActionC
 import { logLoginUserRequest } from "../../store/login/loginActionCreators";
 import { setToken } from "../../storage/tokenStorage";
 import { TODOS_PATH } from "../../routes/consts";
+import userActions from "../../store/user/userActionCreators";
 
 export default function LoginInputGroup() {
     const dispatch = useDispatch();
@@ -47,6 +48,9 @@ export default function LoginInputGroup() {
             dispatch(authorizationActions.setToken(data.login.token))
             if(data?.login?.token){
                 setToken(data.login.token)
+                dispatch(userActions.setId(data.login._id));
+                dispatch(userActions.setNickName(data.login.nickName));
+                dispatch(userActions.setToken(data.login.token));
             }
             history.push(`${TODOS_PATH}`)
         }

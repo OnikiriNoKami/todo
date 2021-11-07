@@ -61,3 +61,22 @@ export const getAllUsers = gql`
         }
     }
 `;
+
+export const getUserByIdWithTodos = gql`
+    query Queries($userId: String) {
+        getUserById(id: $userId) {
+            _id
+            nickName
+            todos
+            userTodos {
+                _id
+                title
+                description
+                statusId
+                userId
+                beginDate
+                endDate
+            }
+        }
+    }
+`;

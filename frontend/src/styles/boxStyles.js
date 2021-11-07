@@ -9,6 +9,25 @@ const useBoxStyles = makeStyles((theme) => {
             height: '100%',
             alignItems: 'center',
         },
+        boxBasic: {
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+        },
+        boxLogoutButton: {
+            position: 'absolute',
+            bottom: '5%',
+            right: '5%',
+            zIndex: 4,
+        },
+        boxToTop: {
+            paddingTop: '25px',
+            width: '100%',
+            display: 'flex',
+            //flexGrow: 1,
+            //height: '100%',
+            //alignItems: 'center',
+        }
     })
 })
 
