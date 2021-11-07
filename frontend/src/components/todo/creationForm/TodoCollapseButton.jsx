@@ -20,7 +20,7 @@ export default function TodoCollapseButton() {
             <Grid container spacing={3} justifyContent="center">
                 <Grid item xs={12}>
                     <Button
-                        endIcon={isOpen ? <ArrowDropDownIcon /> : <ArrowDropUpIcon />}
+                        endIcon={isOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
                         className={buttonStyles.fullWidth}
                         onClick={handleClick}
                     >
