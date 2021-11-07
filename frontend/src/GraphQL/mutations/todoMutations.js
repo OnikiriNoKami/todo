@@ -4,7 +4,7 @@ export const createTodo = gql`
     mutation Mutations(
         $title: String!
         $userId: String!
-        $statusId: String!
+        $statusId: String
         $description: String
         $beginDate: String
         $endDate: String
@@ -21,6 +21,8 @@ export const createTodo = gql`
             title
             description
             userId
+            beginDate
+            endDate
         }
     }
 `;

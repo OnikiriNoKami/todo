@@ -3,16 +3,18 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import useBoxStyles from "../../../styles/boxStyles";
-
 import TodoCollapseGroup from "./TodoCollapseGroup";
-
+import { useDispatch } from "react-redux";
+import todoCreationRequestActions from "../../../store/todo/totoCreation/todoCreationRequests/todoCreationRequestActionCreators";
 
 export default function TodoCreationForm() {
     const boxStyles = useBoxStyles();
+    const dispatch = useDispatch();
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        console.log("Submit todo creation bubling...");
+        dispatch(todoCreationRequestActions.setCreateRequest(true));
+        
     };
     return (
         <Box className={boxStyles.boxToTop}>
