@@ -110,15 +110,17 @@ const todoMutations = new GraphQLObjectType({
             resolve: (
                 _,
                 { title, description, userId, statusId, beginDate, endDate }
-            ) =>
-                todoController.create({
+            ) =>{
+                statusId === '' ? statusId = null : null
+                return todoController.create({
                     title,
                     description,
                     userId,
                     statusId,
                     beginDate,
                     endDate,
-                }),
+                })
+            },
         },
         deleteTodo: {
             type: todoType,

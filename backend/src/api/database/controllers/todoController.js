@@ -8,7 +8,7 @@ const todoController = {
         title = "Default title",
         description = "",
         userId = "",
-        statusId = "",
+        statusId = null,
         beginDate = "",
         endDate = "",
         withTodos,
