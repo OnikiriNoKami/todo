@@ -75,6 +75,19 @@ const todoQueries = new GraphQLObjectType({
                 const {user} = graphqlFields(info);
                 return todoController.getTodoById(id, user);
             }
+        },
+        getTodosByUserId: {
+            type: new GraphQLList(todoType),
+            args: {
+                userId: {
+                    type: new GraphQLNonNull(GraphQLString),
+                    description: "MongoDB _id."
+                }
+            },
+            resolve: (_, {userId}, context, info) => {
+                const {user} = graphqlFields(info);
+                return todoController.getTodosByUserId(userId, user);
+            }
         }
     },
 });

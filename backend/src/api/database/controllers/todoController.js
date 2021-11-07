@@ -68,6 +68,20 @@ const todoController = {
             return error
         }
     },
+
+    getTodosByUserId: async (_id, withUser) => {
+        try{
+            const result  = await Todo.find({userId: _id});
+            if(withUser){
+                result.user = await User.findById(_id);
+            }
+            return result;
+        } catch(error){
+            console.log(error.message);
+            return error
+        }
+    },
+    
     delete: async (_id, withUser)=> {
         try {
             const result = await Todo.findByIdAndRemove(_id);
