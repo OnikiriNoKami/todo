@@ -97,7 +97,7 @@ const todoMutations = new GraphQLObjectType({
                     description: "MongoDB _id.",
                 },
                 statusId: {
-                    type: new GraphQLNonNull(GraphQLString),
+                    type: GraphQLString,
                     description: "MongoDB _id.",
                 },
                 beginDate: {
