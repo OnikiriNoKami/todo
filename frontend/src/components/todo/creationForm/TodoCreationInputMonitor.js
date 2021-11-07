@@ -8,6 +8,7 @@ import {
     todoCreationSetTitleDirty,
     todoCreationSetDescriptionIsDefault,
 } from "../../../store/todo/totoCreation/todoCreationInputs/todoCreationInputsActionCreators";
+import todoCreationRequestActions from "../../../store/todo/totoCreation/todoCreationRequests/todoCreationRequestActionCreators";
 
 export default function TodoCreationInputMonitor({ title, description }) {
     const dispatch = useDispatch();
@@ -24,6 +25,7 @@ export default function TodoCreationInputMonitor({ title, description }) {
         } catch (error) {
             console.error(error.message);
         }
+        dispatch(todoCreationRequestActions.setResetRequest(false));
     };
 
     useEffect(() => {
@@ -65,6 +67,12 @@ export default function TodoCreationInputMonitor({ title, description }) {
             dispatch(todoCreationSetDescriptionIsDefault(false));
         }
     }, [description.isDefault, dispatch]);
+
+    useEffect(()=>{
+        if(resetRequest){
+            handleReset();
+        }
+    },[resetRequest])
 
     return null;
 }

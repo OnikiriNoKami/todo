@@ -5,14 +5,16 @@ import TextField from "@mui/material/TextField";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import MobileDatePicker from "@mui/lab/MobileDatePicker";
-import { addDayToEndDate, setEndDate, setBeginDate } from "../../../store/todo/totoCreation/todoCreationDate/todoCreationDateActionCreators";
+import { addDayToEndDate, setEndDate, setBeginDate, setBeginDateIsDirty, setEndDateIsDirty } from "../../../store/todo/totoCreation/todoCreationDate/todoCreationDateActionCreators";
 
 export default function TodoCreationDateGroup() {
     const dispatch = useDispatch();
     const beginDate = useSelector(state=>state.todo.todoCreation.date.beginDate);
     const endDate = useSelector(state=>state.todo.todoCreation.date.endDate);
     React.useEffect(()=>{
-        dispatch(addDayToEndDate(1));
+        if(beginDate.getDate() === endDate.getDate()){
+            dispatch(addDayToEndDate(1));
+        }
     }, [dispatch])
 
     const handleBeginChange = (newValue) => {
@@ -21,6 +23,14 @@ export default function TodoCreationDateGroup() {
 
     const handleEndChange = (newValue) => {
         dispatch(setEndDate(newValue))
+    }
+
+    const handleBeginDirty = () => {
+        dispatch(setBeginDateIsDirty(true));
+    }
+
+    const handleEndDirty = () => {
+        dispatch(setEndDateIsDirty(true));
     }
 
 
@@ -38,7 +48,7 @@ export default function TodoCreationDateGroup() {
                         minDate={Date.now()}
                         maxDate={endDate}
                         onChange={handleBeginChange}
-                        renderInput={(params) => <TextField fullWidth {...params} />}
+                        renderInput={(params) => <TextField onBlur={handleBeginDirty} fullWidth {...params} />}
                     />
                         </Grid>
                         <Grid style={{ paddingTop: 10 }} item xs={12} sm={6}>
@@ -48,7 +58,7 @@ export default function TodoCreationDateGroup() {
                         value={endDate}
                         minDate={beginDate}
                         onChange={handleEndChange}
-                        renderInput={(params) => <TextField fullWidth {...params} />}
+                        renderInput={(params) => <TextField onBlur={handleEndDirty} fullWidth {...params} />}
                     />
                         </Grid>
                     </Grid>

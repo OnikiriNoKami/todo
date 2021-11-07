@@ -9,3 +9,6 @@ export const resetDateData = (confirm=false) => {
     }
     throw new Error("Confirmation for date data drop not provided.");
 }
+export const setBeginDateIsDirty = (isDirty) => ({type: todoCreationDateActionsTypes.SET_TODO_CREATION_BEGINDATE_IS_DIRTY, payload: isDirty})
+export const setEndDateIsDirty = (isDirty) => ({type: todoCreationDateActionsTypes.SET_TODO_CREATION_ENDDATE_IS_DIRTY, payload: isDirty})
+

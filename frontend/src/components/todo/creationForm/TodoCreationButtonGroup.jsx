@@ -3,9 +3,17 @@ import { useSelector, useDispatch } from "react-redux";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import useButtonStyles from "../../../styles/buttonStyles";
-
+import todoCreationRequestActions from '../../../store/todo/totoCreation/todoCreationRequests/todoCreationRequestActionCreators';
 
 export default function TodoCreationButtonGroup() {
+    const dispatch = useDispatch();
+    const title = useSelector(state=>state.todo.todoCreation.inputs.title);
+    const description = useSelector(state=>state.todo.todoCreation.inputs.description);
+
+    const handleInputsReset = () => {
+        dispatch(todoCreationRequestActions.setResetRequest(true));
+    }
+
     const buttonStyles = useButtonStyles()
     return (
         <Grid item xs={12}>
@@ -18,7 +26,7 @@ export default function TodoCreationButtonGroup() {
                                 variant="outlined"
                                 color="primary"
                                 type='submit'
-                                //disabled={!password.valid || !(email.valid || email.isDefault) || !nickName.valid}
+                                disabled={!title.valid || !(description.valid || description.isDefault)}
                             >
                                 create
                             </Button>
@@ -28,8 +36,8 @@ export default function TodoCreationButtonGroup() {
                                 className={buttonStyles.fullWidth}
                                 variant="outlined"
                                 color="secondary"
-                                //onClick={callResetInputs}
-                                //disabled={!password.dirty && !email.dirty && !nickName.dirty}
+                                onClick={handleInputsReset}
+                                disabled={!title.dirty && (!description.dirty || description.isDefault)}
                             >
                                 reset
                             </Button>
