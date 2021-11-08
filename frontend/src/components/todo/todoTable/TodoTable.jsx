@@ -11,27 +11,31 @@ import TodoTableHead from "./TodoTableHead";
 import Paper from "@mui/material/Paper";
 import useBoxStyles from "../../../styles/boxStyles";
 import todosActions from "../../../store/todo/manyTodosActionCreators";
-import { getTodosByUserId } from "../../../GraphQL/queries/todoQueries";
+import { getTodoByUserIdPaginated } from "../../../GraphQL/queries/todoQueries";
 import TodoTableRow from "./TodoTableRow";
 
 export default function TodoTable() {
     const boxStyles = useBoxStyles();
     const dispatch = useDispatch();
     const [fetchTodos, { error, loading, data }] =
-        useLazyQuery(getTodosByUserId);
+        useLazyQuery(getTodoByUserIdPaginated);
     const userId = useSelector((state) => state.user.id);
     const todos = useSelector((state) => state.todo.manyTodos.todos);
+    const limit = useSelector((state) => state.pagination.todoPagination.limit);
+    const page = useSelector((state) => state.pagination.todoPagination.currentPage);
     useEffect(() => {
         fetchTodos({
             variables: {
                 userId,
+                limit,
+                page,
             },
         });
     }, []);
 
     useEffect(() => {
         if (data) {
-            dispatch(todosActions.setTodos(data.getTodosByUserId));
+            dispatch(todosActions.setTodos(data.getTodosByUserId.todos));
         }
     }, [data]);
 
