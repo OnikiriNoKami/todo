@@ -39,7 +39,7 @@ export default function TodoTable() {
         <Box className={boxStyles.boxToTop}>
             <Container>
                 <Grid container spacinf={2} justifyContent="center">
-                    <Grid item xs={12} ms={10} md={8}>
+                    <Grid item xs={12} sm={10} md={8}>
                         <TableContainer component={Paper}>
                             <Table>
                                 <TodoTableHead />
