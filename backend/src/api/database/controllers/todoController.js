@@ -1,3 +1,4 @@
+const ComposePagination = require("../../utils/database/ComposePagination");
 const Todo = require("../schemas/todoSchema");
 const User = require("../schemas/userSchema");
 const userController = require("./userController");
@@ -69,9 +70,26 @@ const todoController = {
         }
     },
 
-    getTodosByUserId: async (_id, withUser) => {
+    // getTodosByUserId: async (_id, withUser) => {
+    //     try{
+    //         const result  = await Todo.find({userId: _id});
+    //         if(withUser){
+    //             result.user = await User.findById(_id);
+    //         }
+    //         return result;
+    //     } catch(error){
+    //         console.log(error.message);
+    //         return error
+    //     }
+    // },
+    getTodosByUserId: async ({_id, pagination={limit:25, page:1}}, withUser) => {
         try{
-            const result  = await Todo.find({userId: _id});
+            const totalCount = await Todo.countDocuments({userId: _id});
+            const limit = parseInt(pagination.limit, 10);
+            const page = parseInt(pagination.page, 10);
+            if (totalCount === 0) return [];
+            const result  = await Todo.find({userId: _id}).limit(limit).skip(limit * (page-1));
+            result.pagination = ComposePagination({limit, page, totalCount});
             if(withUser){
                 result.user = await User.findById(_id);
             }
@@ -81,7 +99,6 @@ const todoController = {
             return error
         }
     },
-    
     delete: async (_id, withUser)=> {
         try {
             const result = await Todo.findByIdAndRemove(_id);

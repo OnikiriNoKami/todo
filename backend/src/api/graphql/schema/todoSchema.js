@@ -8,6 +8,8 @@ const {
 } = require("graphql");
 const graphqlFields = require("graphql-fields");
 const todoController = require("../../database/controllers/todoController");
+const paginationType = require("./paginationType");
+
 const userTypeNoCircularDeps = new GraphQLObjectType({
     name: "UserInfo",
     fields: {
@@ -46,6 +48,9 @@ const todoType = new GraphQLObjectType({
             type: userTypeNoCircularDeps,
             description: "Fetches from db only when requested.",
         },
+        pagination: {
+            type: paginationType,
+        },
     },
     description: "A todo.",
 });
@@ -68,27 +73,47 @@ const todoQueries = new GraphQLObjectType({
             args: {
                 id: {
                     type: new GraphQLNonNull(GraphQLString),
-                    description: "MongoDB _id."
-                }
+                    description: "MongoDB _id.",
+                },
             },
-            resolve: (_, {id}, context, info) => {
-                const {user} = graphqlFields(info);
+            resolve: (_, { id }, context, info) => {
+                const { user } = graphqlFields(info);
                 return todoController.getTodoById(id, user);
-            }
+            },
         },
         getTodosByUserId: {
             type: new GraphQLList(todoType),
             args: {
                 userId: {
                     type: new GraphQLNonNull(GraphQLString),
-                    description: "MongoDB _id."
-                }
+                    description: "MongoDB _id.",
+                },
+                limit: {
+                    type: GraphQLString,
+                    description: "limit default 25",
+                },
+                page: {
+                    type: GraphQLString,
+                    description: "page base is 1",
+                },
             },
-            resolve: (_, {userId}, context, info) => {
-                const {user} = graphqlFields(info);
-                return todoController.getTodosByUserId(userId, user);
-            }
-        }
+            resolve: (_, { userId, limit, page }, context, info) => {
+                const { user } = graphqlFields(info);
+                const validatedLimit = limit || limit > 0 ? limit : 25;
+                const validatedPage = page || page > 0 ? page : 1;
+                if (page < 1 && !limit) page = 1;
+                return todoController.getTodosByUserId(
+                    {
+                        _id: userId,
+                        pagination: {
+                            limit: validatedLimit,
+                            page: validatedPage,
+                        },
+                    },
+                    user
+                );
+            },
+        },
     },
 });
 
@@ -123,8 +148,8 @@ const todoMutations = new GraphQLObjectType({
             resolve: (
                 _,
                 { title, description, userId, statusId, beginDate, endDate }
-            ) =>{
-                statusId === '' ? statusId = null : null
+            ) => {
+                statusId === "" ? (statusId = null) : null;
                 return todoController.create({
                     title,
                     description,
@@ -132,7 +157,7 @@ const todoMutations = new GraphQLObjectType({
                     statusId,
                     beginDate,
                     endDate,
-                })
+                });
             },
         },
         deleteTodo: {
@@ -140,20 +165,20 @@ const todoMutations = new GraphQLObjectType({
             args: {
                 id: {
                     type: new GraphQLNonNull(GraphQLString),
-                    description: 'MongoDB _id.'
-                }
+                    description: "MongoDB _id.",
+                },
             },
-            resolve: (_, {id}, context, info) => {
-                const {user} = graphqlFields(info);
+            resolve: (_, { id }, context, info) => {
+                const { user } = graphqlFields(info);
                 return todoController.delete(id, user);
-            }
-        }
+            },
+        },
     },
 });
 
 const todoSchema = new GraphQLSchema({
     query: todoQueries,
-    mutation: todoMutations
+    mutation: todoMutations,
 });
 
 module.exports = {
