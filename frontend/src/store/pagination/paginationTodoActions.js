@@ -31,6 +31,8 @@ const paginationTodoActions = {
         type: paginationActions.SET_TODO_PAGINATION_DATA_TOGETHER,
         payload: { limit, offset, page, hasPrevious, hasNext },
     }),
+    setTotalCount: (totalCount) => ({type: paginationActions.SET_TODO_TOTAL_COUNT, payload: totalCount}),
+    setTotalPages: (totalPages) => ({type: paginationActions.SET_TODO_TOTAL_PAGES, paylaod: totalPages}),
 };
 
 export default paginationTodoActions;

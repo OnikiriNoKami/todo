@@ -5,6 +5,8 @@ const paginationActions = {
     SET_TODO_HAS_PREVIOUS: "set_todo_has_previous",
     SET_TODO_HAS_NEXT: "set_todo_has_next",
     SET_TODO_PAGINATION_DATA_TOGETHER: "set_todo_pagination_data_together",
+    SET_TODO_TOTAL_COUNT: 'set_todo_total_count',
+    SET_TODO_TOTAL_PAGES: 'set_todo_total_pages',
     
     SET_COMMENT_LIMIT: "set_comment_limit",
     SET_COMMENT_OFFSET: "set_comment_offset",

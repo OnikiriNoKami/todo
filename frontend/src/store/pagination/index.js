@@ -4,7 +4,7 @@ import todoPaginationReducer from "./todoPaginaton";
 
 const paginationReducer = combineReducers({
     todoPagination: todoPaginationReducer,
-    commentPagination: commentPaginationReducer,
+    //commentPagination: commentPaginationReducer,
 });
 
 export default paginationReducer;
