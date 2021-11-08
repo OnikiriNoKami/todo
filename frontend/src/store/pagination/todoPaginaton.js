@@ -8,6 +8,7 @@ const defaultTodoPaginationState = {
     offset: 0,
     hasPrev: false,
     hasNext: false,
+    changeRequest: false,
 };
 
 const todoPaginationReducer = (
@@ -29,6 +30,8 @@ const todoPaginationReducer = (
             return { ...state, hasNext: payload };
         case paginationActions.SET_TODO_HAS_PREVIOUS:
             return { ...state, hasPrev: payload };
+        case paginationActions.SET_TODO_CHANGE_REQUEST:
+            return { ...state, changeRequest: payload };
         case paginationActions.SET_TODO_PAGINATION_DATA_TOGETHER:
             return {
                 ...state,
@@ -38,7 +41,7 @@ const todoPaginationReducer = (
                 hasNext: payload.hasNext || state.hasNext,
                 hasPrev: payload.hasPrevious || state.hasPrev,
                 totalPages: payload.totalPages || state.totalPages,
-                totaCount: payload.totalCount || state.totalCount,
+                totalCount: payload.totalCount || state.totalCount,
             };
 
         default:
