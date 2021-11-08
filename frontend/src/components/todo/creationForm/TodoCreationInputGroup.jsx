@@ -6,6 +6,7 @@ import useValidatedInput from '../../../hooks/useValidatedInput';
 import TodoCreationInputMonitor from './TodoCreationInputMonitor';
 import { useCreateTodo } from '../../../hooks/GraphQL/mutations/todoMutations';
 import todoCreationRequestActions from '../../../store/todo/totoCreation/todoCreationRequests/todoCreationRequestActionCreators';
+import { paginationTodoChangeRequest } from '../../../store/pagination/paginationTodoActions';
 
 export default function TodoCreationInputGroup() {
     const dispatch = useDispatch();
@@ -42,7 +43,7 @@ export default function TodoCreationInputGroup() {
 
     useEffect(()=>{
         if(todoCreateMutation.result.data){
-            console.log(todoCreateMutation.result.data)
+            dispatch(paginationTodoChangeRequest(true))
         }
 
     }, [todoCreateMutation.result.data])

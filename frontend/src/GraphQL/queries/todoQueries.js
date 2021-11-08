@@ -63,6 +63,29 @@ export const getTodosByUserId = gql`
     }
 `;
 
+export const getTodoByUserIdPaginated = gql`
+    query Queries($userId: String!, $limit: Int, $page: Int) {
+        getTodosByUserId(userId: $userId, limit: $limit, page: $page) {
+            todos {
+                _id
+                title
+                description
+                userId
+                statusId
+                beginDate
+                endDate
+            }
+            pagination {
+                hasNext
+                page
+                hasPrev
+                limit
+                totalCount
+            }
+        }
+    }
+`;
+
 export const getTodoByIdWithUser = gql`
     query Queries($todoId: String!) {
         getTodoById(id: $todoId) {
