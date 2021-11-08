@@ -14,26 +14,32 @@ const todoController = {
         endDate = "",
         withTodos,
     }) => {
-        try{
-            const todo = new Todo({title, description, userId, statusId, beginDate, endDate});
-            await todo.save()
-            await findAndAddTodo({_id: userId, todoId: todo._id, withTodos})
+        try {
+            const todo = new Todo({
+                title,
+                description,
+                userId,
+                statusId,
+                beginDate,
+                endDate,
+            });
+            await todo.save();
+            await findAndAddTodo({ _id: userId, todoId: todo._id, withTodos });
 
-            return todo
-
-        } catch (error){
-            console.log(error.message)
-            return error
+            return todo;
+        } catch (error) {
+            console.log(error.message);
+            return error;
         }
     },
 
     getAllTodos: async () => {
         try {
-            const result = await Todo.find()
-            return result
-        } catch (error){
-            console.log(error.message)
-            return error
+            const result = await Todo.find();
+            return result;
+        } catch (error) {
+            console.log(error.message);
+            return error;
         }
     },
 
@@ -42,31 +48,30 @@ const todoController = {
             const result = await Todo.aggregate([
                 {
                     $lookup: {
-                        from: 'users',
-                        localField: 'userId',
-                        foreignField: '_id',
-                        as: 'user'
-                      },
+                        from: "users",
+                        localField: "userId",
+                        foreignField: "_id",
+                        as: "user",
+                    },
                 },
             ]);
             return result || null;
-
-        } catch (error){
-            console.log(error.message)
-            return error
+        } catch (error) {
+            console.log(error.message);
+            return error;
         }
     },
 
-    getTodoById: async (_id, withUser)=> {
-        try{
+    getTodoById: async (_id, withUser) => {
+        try {
             const result = await Todo.findById(_id);
-            if(withUser){
+            if (withUser) {
                 result.user = await User.findById(result.userId);
             }
-            return result
-        } catch (error){
-            console.log(error.message)
-            return error
+            return result;
+        } catch (error) {
+            console.log(error.message);
+            return error;
         }
     },
 
@@ -82,38 +87,46 @@ const todoController = {
     //         return error
     //     }
     // },
-    getTodosByUserId: async ({_id, pagination={limit:25, page:1}}, withUser) => {
-        try{
-            const totalCount = await Todo.countDocuments({userId: _id});
+    getTodosByUserId: async (
+        { _id, pagination = { limit: 25, page: 1 } },
+        withUser
+    ) => {
+        try {
+            const totalCount = await Todo.countDocuments({ userId: _id });
             const limit = parseInt(pagination.limit, 10);
             const page = parseInt(pagination.page, 10);
             if (totalCount === 0) return [];
-            const result  = await Todo.find({userId: _id}).limit(limit).skip(limit * (page-1));
-            result.pagination = ComposePagination({limit, page, totalCount});
-            if(withUser){
+            const result = await Todo.find({ userId: _id })
+                .limit(limit)
+                .skip(limit * (page - 1));
+            const resPagination = ComposePagination({ limit, page, totalCount });
+            if (withUser) {
                 result.user = await User.findById(_id);
             }
-            return result;
-        } catch(error){
+            return { todos: result, pagination: resPagination };
+        } catch (error) {
             console.log(error.message);
-            return error
+            return error;
         }
     },
-    delete: async (_id, withUser)=> {
+    delete: async (_id, withUser) => {
         try {
             const result = await Todo.findByIdAndRemove(_id);
-            if(result){
-                const removeFromUser = await userController.findAndRemoveTodo({userId: result.userId, todoId: result._id })
+            if (result) {
+                const removeFromUser = await userController.findAndRemoveTodo({
+                    userId: result.userId,
+                    todoId: result._id,
+                });
             }
-            if(withUser){
+            if (withUser) {
                 result.user = await User.findById(result.userId);
             }
-            return result
-        } catch(error){
-            console.log(error.message)
-            return error
+            return result;
+        } catch (error) {
+            console.log(error.message);
+            return error;
         }
-    }
+    },
 };
 
 module.exports = todoController;

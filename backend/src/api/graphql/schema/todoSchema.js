@@ -3,6 +3,7 @@ const {
     GraphQLString,
     GraphQLList,
     GraphQLSchema,
+    GraphQLInt,
     GraphQLNonNull,
     GraphQLID,
 } = require("graphql");
@@ -98,11 +99,11 @@ const todoQueries = new GraphQLObjectType({
                     description: "MongoDB _id.",
                 },
                 limit: {
-                    type: GraphQLString,
+                    type: GraphQLInt,
                     description: "limit default 25",
                 },
                 page: {
-                    type: GraphQLString,
+                    type: GraphQLInt,
                     description: "page base is 1",
                 },
             },
