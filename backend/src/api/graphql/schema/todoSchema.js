@@ -48,12 +48,21 @@ const todoType = new GraphQLObjectType({
             type: userTypeNoCircularDeps,
             description: "Fetches from db only when requested.",
         },
+    },
+    description: "A todo.",
+});
+
+const todoPaginatedType = new GraphQLObjectType({
+    name: 'TodoPaginatedResult',
+    fields:{
+        todos:{
+            type: new GraphQLList(todoType),
+        },
         pagination: {
             type: paginationType,
         },
     },
-    description: "A todo.",
-});
+})
 
 const todoQueries = new GraphQLObjectType({
     name: "Queries",
@@ -82,7 +91,7 @@ const todoQueries = new GraphQLObjectType({
             },
         },
         getTodosByUserId: {
-            type: new GraphQLList(todoType),
+            type: todoPaginatedType,
             args: {
                 userId: {
                     type: new GraphQLNonNull(GraphQLString),

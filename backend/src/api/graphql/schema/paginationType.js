@@ -1,6 +1,7 @@
 const {
     GraphQLObjectType,
     GraphQLString,
+    GraphQLInt,
     GraphQLBoolean,
 } = require("graphql");
 
@@ -16,15 +17,15 @@ const paginationType = new GraphQLObjectType({
             description: "indicates if previous page exist",
         },
         limit: {
-            type: GraphQLString,
+            type: GraphQLInt,
             description: "limit of documents",
         },
         page: {
-            type: GraphQLString,
+            type: GraphQLInt,
             description: "current page",
         },
         totalCount: {
-            type: GraphQLString,
+            type: GraphQLInt,
             description: "total documents",
         }
     },
