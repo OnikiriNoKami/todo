@@ -14,6 +14,7 @@ const todoActionsTypes = {
 export const todosActionsTypes = {
     SET_TODOS: 'set_todos',
     SET_TODOS_LOADING: 'set_todos_loading',
+    SET_TODOS_NEW_STATUS: 'set_todos_new_status',
     ADD_TODO: 'add_todo',
     DROP_TODOS: 'drop_todos',
 }

@@ -10,6 +10,7 @@ const todosActions = {
         }
         throw new Error("Confirmation for todos drop not provided.")
     },
+    setNewStatusId: ({todoId, statusId}) => ({type: todosActionsTypes.SET_TODOS_NEW_STATUS, payload: {todoId, statusId}}),
 }
 
 export default todosActions;

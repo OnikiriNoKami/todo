@@ -15,6 +15,13 @@ const manyTodosReducer = (state=defaultState, {type, payload}) => {
             return { ...state, todos: [ ...state.todos, payload ] }
         case todosActionsTypes.DROP_TODOS:
             return { ...defaultState }
+        case todosActionsTypes.SET_TODOS_NEW_STATUS:
+            return { ...state, todos: state.todos.map(element => {
+                if(element._id === payload.todoId){
+                    return {...element, statusId: payload.statusId}
+                }
+                return element
+            })}
 
         default: 
             return state

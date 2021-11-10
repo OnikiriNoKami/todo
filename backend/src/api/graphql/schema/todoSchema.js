@@ -170,6 +170,23 @@ const todoMutations = new GraphQLObjectType({
                 });
             },
         },
+        setStatusId: {
+            type: todoType,
+            args: {
+                id: {
+                    type: new GraphQLNonNull(GraphQLString),
+                    description: "MongoDB _id.",
+                },
+                statusId: {
+                    type: new GraphQLNonNull(GraphQLString),
+                    description: "MongoDB _id.",
+                },
+            },
+            resolve: (_, { id, statusId }, context, info) => {
+                const { user } = graphqlFields(info);
+                return todoController.setStatusId(id, statusId, user);
+            },
+        },
         deleteTodo: {
             type: todoType,
             args: {
