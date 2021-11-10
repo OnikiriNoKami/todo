@@ -40,3 +40,12 @@ export const deleteTodo = gql`
         }
     }
 `;
+
+export const setTodoStatusIdMut = gql`
+    mutation Mutations($todoId: String!, $statusId: String!) {
+        setStatusId(id: $todoId, statusId: $statusId) {
+            _id
+            statusId
+        }
+    }
+`;
