@@ -11,6 +11,7 @@ import useBoxStyles from "../../../styles/boxStyles";
 import TodoTableRow from "./TodoTableRow";
 import PaginationComponent from "./tablePaginationComponents/PaginationComponent";
 import TodosLoader from "./TodosLoader";
+import StatusLoader from "./StatusLoader";
 
 export default function TodoTable() {
     const boxStyles = useBoxStyles();
@@ -18,6 +19,7 @@ export default function TodoTable() {
 
     return (
         <Box className={boxStyles.boxToTop}>
+            <StatusLoader />
             <TodosLoader />
             <Container>
                 <Grid container spacinf={2} justifyContent="center">
